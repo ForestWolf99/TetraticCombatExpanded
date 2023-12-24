@@ -1,70 +1,25 @@
-buildscript {
-    repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = 'https://maven.minecraftforge.net' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.spongepowered:mixingradle:0.7.+'
-    }
+plugins {
+    id 'java-library'
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id "dev.architectury.loom" version "1.3-SNAPSHOT"
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
 group = 'smartin'
 version = '2.6.3'
 
 java {
-    archivesBaseName = 'tetratic-combat-1.19'
+    archivesBaseName = 'tetratic-combat-1.20'
     toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
-minecraft {
-    mappings channel: 'official', version: '1.19.2'
-
-    runs {
-        client {
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            arg "-mixin.config=tetraticcombat.mixins.json"
-
-            mods {
-                tetraticcombat {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            arg "-mixin.config=tetraticcombat.mixins.json"
-
-            mods {
-                tetraticcombat {
-                    source sourceSets.main
-                }
-            }
-        }
+loom {
+    forge {
+        mixinConfigs = [
+                "tetraticcombat.mixins.json"
+        ]
     }
-}
-
-
-mixin {
-    add sourceSets.main, "tetraticcombat.refmap.json"
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
@@ -78,25 +33,27 @@ repositories {
         name "KosmX's maven"
         url 'https://maven.kosmx.dev/'
     }
+    maven { url "https://maven.neoforged.net/releases/" }
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.19.2-43.2.0'
+    minecraft "com.mojang:minecraft:1.20.1"
+    mappings loom.officialMojangMappings()
 
-    implementation fg.deobf("curse.maven:cloth-348521:3972423")
+    forge 'net.neoforged:forge:1.20.1-47.1.84'
+
+    modImplementation ("curse.maven:cloth-config-348521:4973441")
     //this SHOULD work but fucks with mixins so idk
     //implementation fg.deobf("curse.maven:animlib-658587:3955876")
-    implementation fg.deobf("dev.kosmx.player-anim:player-animation-lib-forge:0.4.2")
-    implementation fg.deobf("curse.maven:bettercombat-639842:4357578")
+    modImplementation ("dev.kosmx.player-anim:player-animation-lib-forge:1.0.2-rc1+1.20")
+    modImplementation ("curse.maven:better-combat-by-daedelus-639842:4823303")
 
-    implementation fg.deobf("curse.maven:mutil-351914:3941314")
-    implementation fg.deobf("curse.maven:tetra-289712:4370833")
+    modImplementation ("curse.maven:mutil-351914:4824501")
+    modImplementation ("curse.maven:tetra-289712:4857842")
     //implementation fg.deobf("curse.maven:AoF-596955:3995952")
 
     //runtimeOnly(fg.deobf("curse.maven:nbttool-451553:3748971"))
     //runtimeOnly(fg.deobf("curse.maven:Jei-238222:3940240"))
-
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 }
 
 jar {
@@ -113,5 +70,3 @@ jar {
         ])
     }
 }
-
-jar.finalizedBy('reobfJar')
