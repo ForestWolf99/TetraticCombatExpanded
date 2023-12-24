@@ -28,6 +28,19 @@ repositories {
     maven {
         url 'https://www.cursemaven.com'
     }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
+
     //PlayerAnim is weird
     maven {
         name "KosmX's maven"
@@ -42,14 +55,14 @@ dependencies {
 
     forge 'net.neoforged:forge:1.20.1-47.1.84'
 
-    modImplementation ("curse.maven:cloth-config-348521:4973441")
+    modImplementation ("maven.modrinth:cloth-config:11.1.118+forge")
     //this SHOULD work but fucks with mixins so idk
     //implementation fg.deobf("curse.maven:animlib-658587:3955876")
     modImplementation ("dev.kosmx.player-anim:player-animation-lib-forge:1.0.2-rc1+1.20")
-    modImplementation ("curse.maven:better-combat-by-daedelus-639842:4823303")
+    modImplementation ("maven.modrinth:better-combat:1.8.0+1.20.1-forge")
 
-    modImplementation ("curse.maven:mutil-351914:4824501")
-    modImplementation ("curse.maven:tetra-289712:4857842")
+    modImplementation ("maven.modrinth:mutil:6.1.1")
+    modImplementation ("maven.modrinth:tetra:6.1.0")
     //implementation fg.deobf("curse.maven:AoF-596955:3995952")
 
     //runtimeOnly(fg.deobf("curse.maven:nbttool-451553:3748971"))
