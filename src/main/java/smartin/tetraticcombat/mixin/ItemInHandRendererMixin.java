@@ -4,9 +4,9 @@ package smartin.tetraticcombat.mixin;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,11 +19,10 @@ public class ItemInHandRendererMixin {
 
     @Inject(
             at = @At(value = "HEAD"),
-            method = "Lnet/minecraft/client/renderer/ItemInHandRenderer;renderItem(Lnet/minecraft/world/entity/LivingEntity;Lnet/minecraft/world/item/ItemStack;Lnet/minecraft/client/renderer/block/model/ItemTransforms$TransformType;ZLcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;I)V",
-            remap = true,
+            method = "renderItem",
             require = 1
     )
-    private void renderArmWithItem(LivingEntity livingEntity, ItemStack itemstack, ItemTransforms.TransformType transformType, boolean bool, PoseStack poseStack, MultiBufferSource multiBufferSource, int unknownInt, CallbackInfo ci){
+    private void renderArmWithItem(LivingEntity arg, ItemStack itemstack, ItemDisplayContext arg3, boolean bl, PoseStack poseStack, MultiBufferSource arg5, int i, CallbackInfo ci){
         if(!ForgeConfigHolder.COMMON.enableRescale.get()) return;
         CompoundTag tag = itemstack.getTag();
 

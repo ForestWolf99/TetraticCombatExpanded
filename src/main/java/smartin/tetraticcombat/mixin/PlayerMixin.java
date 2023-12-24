@@ -4,6 +4,7 @@ package smartin.tetraticcombat.mixin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -15,10 +16,11 @@ import java.util.Map;
 
 @Mixin({Player.class})
 public class PlayerMixin {
-    private static final Map<Player, ItemStack> playerItemStackMap= new HashMap();
+    @Unique
+    private static final Map<Player, ItemStack> playerItemStackMap = new HashMap<>();
     @Inject(
             at = @At(value = "HEAD"),
-            method = "Lnet/minecraft/world/entity/player/Player;tick()V",
+            method = "tick()V",
             remap = true,
             require = 1
     )

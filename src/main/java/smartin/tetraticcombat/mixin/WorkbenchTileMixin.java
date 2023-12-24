@@ -16,7 +16,7 @@ public abstract class WorkbenchTileMixin {
     @Shadow public abstract ItemStack getTargetItemStack();
 
     @Inject(
-            method = "Lse/mickelus/tetra/blocks/workbench/WorkbenchTile;craft(Lnet/minecraft/world/entity/player/Player;)V",
+            method = "craft(Lnet/minecraft/world/entity/player/Player;)V",
             at = @At("RETURN"),
             remap = false
     )

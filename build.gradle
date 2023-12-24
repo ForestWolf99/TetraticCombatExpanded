@@ -7,10 +7,10 @@ plugins {
 }
 
 group = 'smartin'
-version = '2.6.3'
+version = '2.7.0'
 
 java {
-    archivesBaseName = 'tetratic-combat-1.20'
+    archivesBaseName = 'tetratic-combat-expanded-1.20'
     toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
@@ -60,11 +60,11 @@ jar {
     manifest {
         attributes([
                 "Specification-Title"     : "tetraticcombat",
-                "Specification-Vendor"    : "Smartin, Ace",
+                "Specification-Vendor"    : "Firelight Studios, Smartin, Ace",
                 "Specification-Version"   : "1.0", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
                 "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : "Smartin, Ace",
+                "Implementation-Vendor"   : "Firelight Studios, Smartin, Ace",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "MixinConfigs"            : "tetraticcombat.mixins.json"
         ])

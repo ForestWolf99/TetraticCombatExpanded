@@ -15,13 +15,13 @@ import smartin.tetraticcombat.ItemResolver.ReloadListener;
 
 
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod("tetraticcombat")
+@Mod("tetratic_combat_expanded")
 public class TetraticCombat {
 
     // Directly reference a log4j logger.
     public static final Logger LOGGER = LogManager.getLogger();
 
-    public static String MODID = "tetraticcombat";
+    public static String MODID = "tetratic_combat_expanded";
 
     public TetraticCombat() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ForgeConfigHolder.COMMON_SPEC);

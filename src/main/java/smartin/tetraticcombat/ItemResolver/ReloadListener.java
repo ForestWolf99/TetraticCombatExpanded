@@ -6,15 +6,14 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
-import net.minecraftforge.common.data.ExistingFileHelper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import smartin.tetraticcombat.ForgeConfigHolder;
 
 import java.io.BufferedReader;
-import java.util.Collection;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Iterator;
-import java.util.List;
 
 public class ReloadListener extends SimplePreparableReloadListener {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -29,27 +28,30 @@ public class ReloadListener extends SimplePreparableReloadListener {
         resourceManager.listPacks().filter(packResources -> packResources.getNamespaces(PackType.SERVER_DATA).contains("tetratic")).forEach(packResources -> {
             //packResources.getResources()
 
-            Collection<ResourceLocation> packResourcesResources = packResources.getResources(PackType.SERVER_DATA, "tetratic", dataFolder, (fileName) -> fileName.toString().endsWith(".json"));
-            if (packResourcesResources.size() > 0) {
-                if(ForgeConfigHolder.COMMON.verboseLogs.get()){
-                    LOGGER.info("Tetratic Loading Config from " + packResources.getName());
-                }
-                packResourcesResources.forEach(identifier -> {
-                    if (identifier.getNamespace().equals("tetratic")) {
-                        resourceManager.getResource(identifier).ifPresent(resource -> {
-                            try {
-                                BufferedReader reader = resource.openAsReader();
-                                JSONFormat currentFile = new Gson().fromJson(reader, JSONFormat.class);
-                                mergedConfig.merge(currentFile);
-                            } catch (Exception JsonParsing) {
-                                LOGGER.warn("Exception loading tetratic Configuration from Datapack");
-                                LOGGER.warn(JsonParsing.getMessage());
-                                LOGGER.warn(identifier.toString());
-                            }
-                        });
+            packResources.listResources(PackType.SERVER_DATA, "tetratic", dataFolder, (fileName, supplier) -> {
+                if (!fileName.toString().endsWith(".json"))
+                    return;
+
+                if (fileName.getNamespace().equals("tetratic")) {
+                    try {
+                        var resource = supplier.get();
+
+                        try {
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(resource));
+                            JSONFormat currentFile = new Gson().fromJson(reader, JSONFormat.class);
+                            mergedConfig.merge(currentFile);
+                        } catch (Exception JsonParsing) {
+                            LOGGER.warn("Exception loading tetratic Configuration from Datapack");
+                            LOGGER.warn(JsonParsing.getMessage());
+                            LOGGER.warn(fileName.toString());
+                        }
+                    } catch (IOException e) {
+                        LOGGER.warn("Exception loading tetratic Configuration from Datapack");
+                        LOGGER.warn(e.getMessage());
+                        LOGGER.warn(fileName.toString());
                     }
-                });
-            }
+                }
+            });
         });
         if(ForgeConfigHolder.COMMON.verboseLogs.get()){
             LOGGER.info(mergedConfig.toString());
