@@ -69,7 +69,7 @@ Tetra, Tetra:AoF compat with BetterCombat
 [[dependencies.tetratic_combat_expanded]]
    modId="bettercombat"
    mandatory=true
-   versionRange="[1.8.1,)"
+   versionRange="[1.8,)"
    ordering="NONE"
    side="BOTH"
 
