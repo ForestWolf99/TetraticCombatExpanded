@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'smartin'
-version = '2.7.0'
+version = '2.7.1'
 
 java {
     archivesBaseName = 'tetratic-combat-expanded-1.20'
@@ -53,7 +53,7 @@ dependencies {
     minecraft "com.mojang:minecraft:1.20.1"
     mappings loom.officialMojangMappings()
 
-    forge 'net.neoforged:forge:1.20.1-47.1.84'
+    forge 'net.neoforged:forge:1.20.1-47.1.79'
 
     modImplementation ("maven.modrinth:cloth-config:11.1.118+forge")
     //this SHOULD work but fucks with mixins so idk
