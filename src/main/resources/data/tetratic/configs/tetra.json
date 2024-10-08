@@ -137,6 +137,13 @@
           }
         }
       },
+      "sword/knife": {
+        "config": {
+          "attributes": {
+            "parent": "bettercombat:dagger"
+          }
+        }
+      },
       "sword/short_blade": {
         "config": {
           "attributes": {
