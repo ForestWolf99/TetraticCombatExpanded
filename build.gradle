@@ -3,25 +3,21 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'maven-publish'
-    id "dev.architectury.loom" version "1.7-SNAPSHOT"
+    id "dev.architectury.loom" version "1.3-SNAPSHOT"
 }
 
 group = 'smartin'
-version = '2.8.0'
-
-base {
-    archivesName = 'tetratic-combat-expanded-1.20'
-}
+version = '2.7.2'
 
 java {
+    archivesBaseName = 'tetratic-combat-expanded-1.20'
     toolchain.languageVersion = JavaLanguageVersion.of(17)
 }
 
 loom {
-    silentMojangMappingsLicense()
     forge {
         mixinConfigs = [
-            "tetraticcombat.mixins.json"
+                "tetraticcombat.mixins.json"
         ]
     }
 }
@@ -51,18 +47,11 @@ repositories {
         url 'https://maven.kosmx.dev/'
     }
     maven { url "https://maven.neoforged.net/releases/" }
-
-    maven {
-        url "https://maven.parchmentmc.org"
-    }
 }
 
 dependencies {
     minecraft "com.mojang:minecraft:1.20.1"
-    mappings loom.layered() {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-1.20.1:2023.09.03@zip")
-    }
+    mappings loom.officialMojangMappings()
 
     forge 'net.neoforged:forge:1.20.1-47.1.79'
 
@@ -80,21 +69,17 @@ dependencies {
     //runtimeOnly(fg.deobf("curse.maven:Jei-238222:3940240"))
 }
 
-java {
-    withSourcesJar()
-
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-tasks.withType(JavaCompile).configureEach {
-    it.options.release = 17
-}
-
-processResources {
-    inputs.property 'version', project.version
-
-    filesMatching('META-INF/mods.toml') {
-        expand version: project.version
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : "tetraticcombat",
+                "Specification-Vendor"    : "Firelight Studios, Smartin, Ace",
+                "Specification-Version"   : "1.0", // We are version 1 of ourselves
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : project.jar.archiveVersion,
+                "Implementation-Vendor"   : "Firelight Studios, Smartin, Ace",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs"            : "tetraticcombat.mixins.json"
+        ])
     }
 }
